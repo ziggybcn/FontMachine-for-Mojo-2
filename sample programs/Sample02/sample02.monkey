@@ -1,8 +1,8 @@
 'This sample shows the DrawBorder and DrawShadow properties of a BitmapFont.
 
 'We import the required modukes:
-Import mojo
-Import fontmachine
+'Import mojo
+Import mojo2fontmachine
  
 'Start the program:
 Function Main() 
@@ -16,9 +16,9 @@ Class Sample02 extends App
 	Field sportsFont:BitmapFont
 
 	Field instructions:String 
-	
+	Field canvas:Canvas
 	Method OnCreate()
-	
+		canvas = New Canvas()
 		SetUpdateRate(60) 
 
 		'We load the Sport Fonts. It's a complete font, and as 
@@ -35,7 +35,8 @@ Class Sample02 extends App
 		
 		'Those are the instructions that will be printed on screen:
 		instructions = "Instructions:~nQ-Toggle border On/Off~nW-Toggle shadow On/Off"
-			
+		sportsFont.DrawingTarget = canvas
+		smallFont.DrawingTarget = canvas
 	End
 	
 	Method OnUpdate()
@@ -46,16 +47,17 @@ Class Sample02 extends App
 	End Method
 	
 	Method OnRender()
-	
-		'Clear background screen:
-		Cls(255,255,255)
+		canvas.Reset()
+		canvas.SetColor(1, 0, 0)
+		canvas.DrawRect(0, 0, canvas.Width, canvas.Height)
+		canvas.SetColor(1, 1, 1)
 		
 		'We draw the sample text:
-		sportsFont.DrawText("This is the sample~ntext!",5,5)
+		sportsFont.DrawText("This is the sample~ntext!", 5, 5)
 		
 		'We draw the instructions:
 		smallFont.DrawText(instructions,5,210)
-
+		canvas.Flush()
 	End
 End
 

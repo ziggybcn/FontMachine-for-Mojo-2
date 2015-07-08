@@ -3,7 +3,7 @@
 	This class handles the creation of [txtinterval] instances to handle wordwrapping of strings in FontMachine.
 #END
 Import intervalslist
-Import fontmachine
+Import mojo2fontmachine
 #REM monkeydoc
 	This class represents a line of text that needs to be wordwrapped. It's internally used by the [[WordWrappedText]] component.
 #END

@@ -3,7 +3,8 @@
 	This class represent a character in a BitmapFont.
 #end
 Import bitmapcharmetrics 
-Import mojo.graphics 
+'Import mojo.graphics 
+Import mojo2.graphics
 
 
 #rem monkeydoc
@@ -38,9 +39,13 @@ Class BitMapChar
 	#END
 	Method LoadCharImage()
 		'if imageResourceName = null Then return
-		if CharImageLoaded() = false then
-			image = LoadImage(imageResourceName)
-			image.SetHandle(-self.drawingMetrics.drawingOffset.x,-self.drawingMetrics.drawingOffset.y)
+		If CharImageLoaded() = False Then
+			Print("Handle set 1")
+			image = Image.Load(imageResourceName)
+			image.SetHandle(-Self.drawingMetrics.drawingOffset.x, -Self.drawingMetrics.drawingOffset.y)
+			drawingMetrics.drawingOffset.Set(-image.HandleX, -image.HandleX)
+			image.SetHandle(0, 0)
+
 			imageResourceNameBackup = imageResourceName
 			imageResourceName = ""
 		endif

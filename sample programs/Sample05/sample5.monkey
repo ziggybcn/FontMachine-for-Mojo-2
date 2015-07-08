@@ -1,8 +1,8 @@
 'This sample shows how to use the WordWrap functionality to scroll text up/down of a wordwrap area
 
-Import fontmachine
+Import mojo2fontmachine
 
-Import mojo
+'Import mojo
 Function Main()
 	Local g:= New Game
 End
@@ -16,9 +16,13 @@ Class Game Extends App
 	
 	Field startingLine:Float = 0
 
+	Field canvas:Canvas
+	
 	Method OnCreate()
-		SetUpdateRate(60)
+		'SetUpdateRate(60)
+		canvas = New Canvas
 		font = New BitmapFont("ZooSmall.txt")
+		font.DrawingTarget = canvas
 		
 		'We load the text we're going to use for this sample:
 		Local text:= LoadString("sampletext.txt")
@@ -49,19 +53,22 @@ Class Game Extends App
 		Const LinesToShow:Int = 10
 		'We just render the whole thing:
 		
-		Cls(200, 190, 180)
+		canvas.Reset()
+		canvas.SetColor(0.7, 0.7, 0.7)
+		canvas.DrawRect(0, 0, canvas.Width, canvas.Height)
+
 		font.DrawText("Press A or S to scroll up/down", DeviceWidth / 2, 0, eDrawAlign.CENTER)
 				
 		'Now we render a background rectangle:
-		SetColor(255, 255, 255)
-		DrawRect(20, 40, wrappedtext.Width, LinesToShow * font.GetFontHeight)
-		SetColor(255, 255, 255)
+		canvas.SetColor(0.7, 0.7, 0.7)
+		canvas.DrawRect(20, 40, wrappedtext.Width, LinesToShow * font.GetFontHeight)
+		canvas.SetColor(1, 1, 1)
 		
 		'And now we render the wrapped text starting by the "startingLine" line. That's how we get scrolling!
 		wrappedtext.PartialDraw(startingLine, LinesToShow, 20, 40, eDrawAlign.LEFT)
 		
 		'We show some additional information in a sort of footer:
 		font.DrawText("Showing lines " + startingLine + " to " + (startingLine + LinesToShow) + " of " + wrappedtext.WrappedLinesCount, DeviceWidth / 2, 400, eDrawAlign.CENTER)
-		
+		canvas.Flush()
 	End
 End

@@ -1,8 +1,8 @@
 'This sample shows how build a simple input text
 
 'We import the required modukes:
-Import mojo
-Import fontmachine
+'Import mojo
+Import mojo2fontmachine
  
 'Start the program:
 Function Main() 
@@ -13,15 +13,17 @@ End
 Class Sample03 Extends App
 	
 	Field basicFont:BitmapFont 
-	Field name:String 
+	Field name:String
+	Field canvas:Canvas
 	
 	Method OnCreate()
 				
 		SetUpdateRate(60)
 
+		canvas = New Canvas
 		basicFont = New BitmapFont("smallfont.txt")
+		basicFont.DrawingTarget = canvas
 		Print "Fonts loaded!"
-		
 	End
 	
 	Method OnUpdate()
@@ -46,8 +48,10 @@ Class Sample03 Extends App
 	Method OnRender()
 	
 		'Clear background screen:
-		Cls(255,255,255)
-		
+		'Cls(255,255,255)
+		canvas.Reset()
+		canvas.SetColor(1, 1, 1)
+		canvas.DrawRect(0, 0, canvas.Width, canvas.Height)
 		Local text:String = "Enter your name>"+ name
 		
 		'We draw the instructions:
@@ -59,10 +63,10 @@ Class Sample03 Extends App
 
 		'We draw a text caret every half second:
 		If (Millisecs() Mod 1000 < 500) Then
-			SetColor(0,0,0)
-			DrawRect(5 + basicFont.GetTxtWidth(text), 5 + basicFont.GetFontHeight(), 7, 3)
+			canvas.SetColor(0, 0, 0)
+			canvas.DrawRect(5 + basicFont.GetTxtWidth(text), 5 + basicFont.GetFontHeight(), 7, 3)
 		Endif
-
+		canvas.Flush
 	End
 End
 

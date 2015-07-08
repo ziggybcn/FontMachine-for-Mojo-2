@@ -30,7 +30,7 @@ Added a new DrawText overload that allows users to draw a substring of a given s
 * Added a module signature file so the module can be automatically updated from Jungle Ide.
 
 *Version 12.02.20-A*
-* Fixed an small bug regarding Font interface consitency. Text width should be Float intead of Int.
+* Fixed an small bug regarding iBitmapFont interface consitency. Text width should be Float intead of Int.
 
 *Version 12.02.17-A*
 * Fixed an small aligment bug on multiline strings rendering
@@ -47,23 +47,23 @@ Added a new DrawText overload that allows users to draw a substring of a given s
 * B Version: Fixed some small issues on text size calculation
 
 *Version 12.01.27-A*
-* Fixed a compatibility issue with the Font interface
+* Fixed a compatibility issue with the iBitmapFont interface
 
 *Version 12.01.25-A*
 * Implemented the aligment flags on draw operations
 * Fixed a syntax error in several GetInfo methods for the bitmapfont class
-* Fixed an incompatibility with the latest Monkey compiler, due to abstract identifier inside the Font interface
+* Fixed an incompatibility with the latest Monkey compiler, due to abstract identifier inside the iBitmapFont interface
 * Addeed the aligment enumerator-like class
 * Optimization of the DrawText command on Java based targets, such as Android (Thanks to SGG at [a JungleIde.com]Jungle Ide[/a] for this one!)
 
 *Version 11.08.03-A*
 * Implemented single texture fonts support
 * Optimized fonts loading time
-* Reduced slightly memory used by each Font instance
+* Reduced slightly memory used by each iBitmapFont instance
 
 #end
 
-Import fontmachine.bitmapfont
+Import bitmapfont
 Import wordwrap
  
 #Rem monkeydoc
@@ -75,4 +75,5 @@ Const Version:String = "14.01.14-A"
 	This constant contains the library name
 #END
 Const Name:String = "FontMachine"
+
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<JiProj xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" EntryPoint=".\fontmachine.monkey" Name="fontmachine module">
+<JiProj xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" EntryPoint=".\mojo2fontmachine.monkey" Name="fontmachine module">
   <Files>
     <Document Filename=".\wordwrap\intervalslist.monkey" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
       <DocGUID />
@@ -78,13 +78,6 @@
         <Y>0</Y>
       </CursorPos>
     </Document>
-    <Document Filename=".\fontinterface.monkey" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
-      <DocGUID />
-      <CursorPos>
-        <X>0</X>
-        <Y>0</Y>
-      </CursorPos>
-    </Document>
     <Document Filename=".\fontmachine.lmbs" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
       <DocGUID />
       <CursorPos>
@@ -92,7 +85,14 @@
         <Y>0</Y>
       </CursorPos>
     </Document>
-    <Document Filename=".\fontmachine.monkey" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
+    <Document Filename=".\ibitmapfont.monkey" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
+      <DocGUID />
+      <CursorPos>
+        <X>0</X>
+        <Y>0</Y>
+      </CursorPos>
+    </Document>
+    <Document Filename=".\mojo2fontmachine.monkey" Open="false" SplitView="false" SplitIsVertical="false" SplitSize="150">
       <DocGUID />
       <CursorPos>
         <X>0</X>
@@ -101,4 +101,6 @@
     </Document>
   </Files>
   <CompilerConfig Configuration="debug" BuildMode="run" Target="Html5_Game" />
+  <Version Major="15" Minor="7" Revision="8" Build="65" ProductName="Untitled product" />
+  <PreBuildCommands />
 </JiProj>
