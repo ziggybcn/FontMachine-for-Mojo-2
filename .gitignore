@@ -1,2 +1,6 @@
 *.build*/
 *.JIPO
+*.JILayout
+*.orig
+*.build/
+*.log

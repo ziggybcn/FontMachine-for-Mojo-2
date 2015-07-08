@@ -435,7 +435,7 @@ Class BitmapFont Implements iBitmapFont
 					borderChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
 					borderChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 					If dynamicLoad = False Then
-						Print("Set handle 2")
+						'Print("Set handle 2")
 						borderChars[char].image = Image.Load(prefixName + "_BORDER_" + char + ".png")
 						borderChars[char].image.SetHandle(-borderChars[char].drawingMetrics.drawingOffset.x, -borderChars[char].drawingMetrics.drawingOffset.y)
 						borderChars[char].drawingMetrics.drawingOffset.Set(-borderChars[char].image.HandleX, -borderChars[char].image.HandleX)
@@ -456,7 +456,7 @@ Class BitmapFont Implements iBitmapFont
 					shadowChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 					Local filename:String = prefixName + "_SHADOW_" + char + ".png"
 					If dynamicLoad = False Then
-						Print("Set handle 3")
+						'Print("Set handle 3")
 						shadowChars[char].image = Image.Load(filename)
 						shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
 						shadowChars[char].drawingMetrics.drawingOffset.Set(-shadowChars[char].image.HandleX, -shadowChars[char].image.HandleX)
@@ -481,7 +481,7 @@ Class BitmapFont Implements iBitmapFont
 					faceChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
 					faceChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 					If dynamicLoad = False Then
-						Print("Set handle 4")
+						'Print("Set handle 4")
 						faceChars[char].image = Image.Load(prefixName + "_" + char + ".png")
 						faceChars[char].image.SetHandle(-faceChars[char].drawingMetrics.drawingOffset.x, -faceChars[char].drawingMetrics.drawingOffset.y)
 						faceChars[char].drawingMetrics.drawingOffset.Set(-faceChars[char].image.HandleX, -faceChars[char].image.HandleX)
@@ -550,7 +550,7 @@ Class BitmapFont Implements iBitmapFont
 			End Select
 			char.packedFontIndex = Int(chrdata[2])
 			If packedImages[char.packedFontIndex] = Null Then
-				Print("No handle set here.")
+				'Print("No handle set here.")
 				packedImages[char.packedFontIndex] = Image.Load(prefixName + separator + char.packedFontIndex + ".png")
 				if maxPacked<char.packedFontIndex Then maxPacked = char.packedFontIndex
 			endif
@@ -618,14 +618,15 @@ Class BitmapFont Implements iBitmapFont
 					if target[char].image <> null Then
 						DrawImage(target[char].image,drx-xOffset,dry)
 					ElseIf target[char].packedFontIndex > 0 Then
-						DrawImageRect(
-							packedImages[target[char].packedFontIndex],
-							- xOffset + drx + target[char].drawingMetrics.drawingOffset.x,
-							dry +target[char].drawingMetrics.drawingOffset.y,
-							target[char].packedPosition.x,
-							target[char].packedPosition.y,
-							target[char].packedSize.x,
-							target[char].packedSize.y)
+						DrawingTarget.DrawRect(
+						-xOffset + drx + target[char].drawingMetrics.drawingOffset.x,
+						dry +target[char].drawingMetrics.drawingOffset.y,
+						packedImages[target[char].packedFontIndex],
+						target[char].packedPosition.x,
+						target[char].packedPosition.y,
+						target[char].packedSize.x,
+						target[char].packedSize.y)
+
 					Endif
 					drx+=faceChars[char].drawingMetrics.drawingWidth  + Kerning.x
 				endif
