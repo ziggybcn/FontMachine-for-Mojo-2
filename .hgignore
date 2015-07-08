@@ -1,0 +1,7 @@
+syntax:glob
+*.JIPO
+*.JILayout
+*.orig
+*.build/
+*.log
+*.build*/
