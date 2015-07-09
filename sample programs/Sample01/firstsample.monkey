@@ -26,10 +26,10 @@ Class Tutorial extends App
 	Method OnRender()
 		font.DrawingTarget = canvas
 		canvas.Reset
-		canvas.SetColor(1, 0, 0)
+		canvas.SetColor(1, 1, 1)
 		
 		Local cnv:= Canvas(font.DrawingTarget)
-		canvas.SetColor(1, 0, 0)
+		canvas.SetColor(1, 1, 1)
 		canvas.DrawRect(0, 0, cnv.Width, cnv.Height)
 		canvas.SetColor(1, 1, 1)
 		'We just draw some text: 
