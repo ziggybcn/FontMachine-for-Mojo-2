@@ -17,7 +17,7 @@ Class FontMachineLoader Implements FontLoader
 			Return True
 		Else
 
-			'Free resources created by the failed load attempt:	
+			'Free resources created by the failed load attempt:
 			For Local chr:= EachIn font.borderChars
 				If chr.image <> Null Then chr.image.Discard()
 			Next
@@ -55,7 +55,6 @@ Class FontMachineLoader Implements FontLoader
 	Private
 	
 	Method LoadFontData:Bool(font:BitmapFont, Info:String, fontName:String, dynamicLoad:bool)
-		DebugStop
 		If Info.StartsWith("P1") Then
 			Return LoadPacked(font, Info, fontName, dynamicLoad)
 			 
@@ -193,40 +192,60 @@ Class FontMachineLoader Implements FontLoader
 		if prefixName.ToLower().EndsWith(".txt") Then prefixName = prefixName[..-4]
 
 		Local charList:string[] = info.Split(";")
-		For local chr:String = EachIn charList
+		Local LoadingKerning:Bool = False
+		For Local chr:String = EachIn charList
 
 			Local chrdata:string[] = chr.Split(",")
 			if chrdata.Length() <2 Then Exit
 			Local char:bitmapchar.BitMapChar
-			Local charIndex:Int = int(chrdata[0])
-			if maxChar<charIndex Then maxChar = charIndex
+			Local currentData:= chrdata[0]
+			If currentData = "{KP" Then
+				Print("Loading kerning!")
+				LoadingKerning = True
+			EndIf
+			If LoadingKerning
+				If currentData = "KP}" Then
+					LoadingKerning = False
+				ElseIf currentData = "{KP" Then
+					'Do nothing
+				Else
+					Local charIndex:Int = int(chrdata[0])
+					Local curChar:BitMapChar = tmpFont.faceChars[charIndex]
+					If curChar <> Null Then curChar.DefineKerningPair(Int(chrdata[1]), Int(chrdata[2]))
+				EndIf
+			Else
+				Local charIndex:Int = int(chrdata[0])
+				If maxChar < charIndex Then maxChar = charIndex
 			
-			select chrdata[1]
-				Case "B"
-					tmpFont.borderChars[charIndex] = New BitMapChar
-					char = tmpFont.borderChars[charIndex]
-				Case "F"
-					tmpFont.faceChars[charIndex] = New BitMapChar
-					char = tmpFont.faceChars[charIndex]
-				Case "S"
-					tmpFont.shadowChars[charIndex] = New BitMapChar
-					char = tmpFont.shadowChars[charIndex]
-			End Select
-			char.packedFontIndex = Int(chrdata[2])
-			If tmpFont.packedImages[char.packedFontIndex] = Null Then
-				'Print("No handle set here.")
-				tmpFont.packedImages[char.packedFontIndex] = Image.Load(prefixName + separator + char.packedFontIndex + ".png")
-				if maxPacked<char.packedFontIndex Then maxPacked = char.packedFontIndex
-			endif
-			char.packedPosition.x = Int(chrdata[3])
-			char.packedPosition.y = Int(chrdata[4])
-			char.packedSize.x = Int(chrdata[5])
-			char.packedSize.y = Int(chrdata[6])
-			char.drawingMetrics.drawingOffset.x = Int(chrdata[8])
-			char.drawingMetrics.drawingOffset.y = Int(chrdata[9])
-			char.drawingMetrics.drawingSize.x = Int(chrdata[10])
-			char.drawingMetrics.drawingSize.y = Int(chrdata[11])
-			char.drawingMetrics.drawingWidth = Int(chrdata[12])
+				select chrdata[1]
+					Case "B"
+						tmpFont.borderChars[charIndex] = New BitMapChar
+						char = tmpFont.borderChars[charIndex]
+					Case "F"
+						tmpFont.faceChars[charIndex] = New BitMapChar
+						char = tmpFont.faceChars[charIndex]
+					Case "S"
+						tmpFont.shadowChars[charIndex] = New BitMapChar
+						char = tmpFont.shadowChars[charIndex]
+					Case "{KP"
+					
+				End Select
+				char.packedFontIndex = Int(chrdata[2])
+				If tmpFont.packedImages[char.packedFontIndex] = Null Then
+					'Print("No handle set here.")
+					tmpFont.packedImages[char.packedFontIndex] = Image.Load(prefixName + separator + char.packedFontIndex + ".png")
+					if maxPacked<char.packedFontIndex Then maxPacked = char.packedFontIndex
+				endif
+				char.packedPosition.x = Int(chrdata[3])
+				char.packedPosition.y = Int(chrdata[4])
+				char.packedSize.x = Int(chrdata[5])
+				char.packedSize.y = Int(chrdata[6])
+				char.drawingMetrics.drawingOffset.x = Int(chrdata[8])
+				char.drawingMetrics.drawingOffset.y = Int(chrdata[9])
+				char.drawingMetrics.drawingSize.x = Int(chrdata[10])
+				char.drawingMetrics.drawingSize.y = Int(chrdata[11])
+				char.drawingMetrics.drawingWidth = Int(chrdata[12])
+			EndIf
 
 		Next
 		tmpFont.borderChars = tmpFont.borderChars[ .. maxChar + 1]

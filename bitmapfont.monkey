@@ -166,8 +166,9 @@ Class BitmapFont Implements iBitmapFont
 				If faceChars[char] <> Null Then
 					lastchar = char
 					twidth = twidth + faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+					If _useKPairs and i > 1 and faceChars[text[i - 2]] <> Null Then twidth += faceChars[text[i - 2]].GetKerningAmountForChar(char)
 				End If
-			ElseIf char = 10 
+			ElseIf char = 10
 				If Abs(MaxWidth)<Abs(twidth) Then MaxWidth = twidth - Kerning.x  - faceChars[lastchar].drawingMetrics.drawingWidth + faceChars[lastchar].drawingMetrics.drawingSize.x
 				twidth = 0
 				lastchar = char
@@ -388,11 +389,35 @@ Class BitmapFont Implements iBitmapFont
 		FontLoaders.AddLast(loader)
 	End
 	
+	#rem monkeydoc
+	This property allows you to define additional kerning on a given bitmap font.
+	By using this property, you set the horizonal and vertical kerning that has to be added on any draw operation.
+	This information will be expressed in the form of a DrawingPoint instance.
+	#end
+	Method Kerning:drawingpoint.DrawingPoint() property
+		if _kerning = null Then _kerning = New drawingpoint.DrawingPoint
+		Return _kerning
+	End
+
+	Method Kerning:void(value:drawingpoint.DrawingPoint) property
+		_kerning = value
+			
+	End
+	
+	Method UseKPairs:Bool() Property
+		Return _useKPairs
+	End
+	
+	Method UseKPairs(value:Bool) Property
+		_useKPairs = value
+	End
+
 	Private
 	
 	Global FontLoaders:= New List<FontLoader>
 	Field _loaded:= False
-
+	Field _useKPairs:= True
+	
 	Method LoadMe(fontDescriptionFilePath:String, dynamicLoad:bool)
 		If FontLoaders.IsEmpty Then
 			BitmapFont.AddLoader(New FontMachineLoader)
@@ -469,7 +494,8 @@ Class BitmapFont Implements iBitmapFont
 						target[char].packedSize.y)
 
 					Endif
-					drx+=faceChars[char].drawingMetrics.drawingWidth  + Kerning.x
+					drx += faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+					If _useKPairs and i > 1 and faceChars[text[i - 2]] <> Null Then drx += faceChars[text[i - 2]].GetKerningAmountForChar(char)
 				endif
 			Else
 			'	Print "Char " + char + " out of scope."
@@ -489,21 +515,7 @@ Class BitmapFont Implements iBitmapFont
 		DrawingTarget.DrawImage(subImage, posx, posy)
 	End
 	Field _kerning:drawingpoint.DrawingPoint 
-	Public
-	#rem monkeydoc
-		This property allows you to define additional kerning on a given bitmap font.
-		By using this property, you set the horizonal and vertical kerning that has to be added on any draw operation.
-		This information will be expressed in the form of a DrawingPoint instance.
-	#end
-	Method Kerning:drawingpoint.DrawingPoint() property
-		if _kerning = null Then _kerning = New drawingpoint.DrawingPoint
-		Return _kerning
-	End
 
-	Method Kerning:void(value:drawingpoint.DrawingPoint) property
-		_kerning = value		  
-			
-	End
 		
 End
 

@@ -73,10 +73,26 @@ Class BitMapChar
 			imageResourceNameBackup = ""
 		EndIf 
 	End Method
+	
+	Method DefineKerningPair(secondChar:Int, amount:Int)
+		If KParis.Contains(secondChar) Then KParis.Remove(secondChar)
+		KParis.Add(secondChar, amount)
+	End
+	
+	Method GetKerningAmountForChar:Int(char:Int)
+		If KParis.Contains(char) Then
+			Return KParis.Get(char)
+		Else
+			'Print "Kerning applied."
+			Return 0
+		EndIf
+	End
 	Private
 	Field imageResourceNameBackup:string
 	Field imageResourceName:String = ""
 
+	Field KParis:= New IntMap<Int>
+	
 End Class
 
 #rem
